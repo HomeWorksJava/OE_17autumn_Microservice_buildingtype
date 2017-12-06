@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+<head>
+    <title>TODO supply a title</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <link rel="stylesheet" type="text/css" href="css/fontawesome/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap.min.css">
+</head>
+<body>  
+    <div id="loginPage" data-bind="visible:page()=='loginPage'">
+        <div data-bind="with: LoginPageViewModel">
+            <div style="width:500px;margin:0 auto;">
+                <h4>Login </h4>
+                <form id="loginform" data-toggle="validator" role="form">
+                    <div class="form-group">
+                        <label class="control-label " for="felhasz">Felhasználónév</label>
+                        <input type="text" class="form-control" id="felhasz" data-bind="value: user" placeholder="Felhasználónév"
+                               data-required-error="Felhasználónév nem lehet üres" required>
+                        <div class="help-block with-errors error-color"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="passwd">Jelszó</label>
+                        <input type="password" class="form-control" data-minlength="1" id="passwd" data-bind="value: pass" placeholder="Jelszó"
+                               data-error="Jelszónak minimum 5 karakternek kell lennie" required>
+                        <div class="help-block with-errors error-color"></div>
+                    </div>
+                    <button type="button" id="submitform" class="btn btn-primary">Bejelentkezés</button>
+                </form>
+            </div>
+            <div id="loginPageErrorContent"></div>
+        </div>
+    </div>
+    <div id="navs" data-bind="visible:page()!='loginPage'">
+        <nav class="navbar navbar-expand-lg  navbar-dark bg-dark">
+            <a class="navbar-brand" href="#mainpage">Főoldal</a>       
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+<!--                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#MyTests">Saját tesztjeim <span class="sr-only">(current)</span></a>
+                    </li>                    
+                </ul>               -->
+                <button class="btn my-2 my-sm-1" data-bind="click:logout">Kijelentkezés</button>               
+            </div>
+        </nav>
+    </div>
+    <div id="mainpage" data-bind="visible:page()=='mainpage'">
+        <h4>Főoldal </h4>
+        <div data-bind="with: MainPageViewModel">
+            <div class="container">
+                <div class="col"><a data-bind="click: addnew" href="#">Új hozzáadása</a></div>
+                <div style="font-weight:bold;background-color:azure" class="row">
+                    <div class="col">Building név</div>
+                    <div class="col">Location id</div>
+                    <div class="col">Bulding type id</div>
+                    <div class="col">Alapterület (m2)</div>
+                    <div class="col">Törlés</div>
+                    <div class="col">Törlés</div>
+                </div>
+                <div data-bind="foreach:locationbuildings">
+                    <div class="row">
+                        <div class="col"><span data-bind="text:buildingName" /></div>
+                        <div class="col"><span data-bind="text:locationid" /></div>
+                        <div class="col"><span data-bind="text:buildingTypeid" /></div>
+                        <div class="col"><span data-bind="text:buildingSize" /></div>
+                        <div class="col"><a data-bind="click: $parent.edit" href="#">Szerkesztés</a></div>
+                        <div class="col"><a data-bind="click: $parent.delete" href="#">Törlés</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="editpage" data-bind="visible:page()=='editpage'">
+        <div data-bind="with: EditPageViewModel">            
+            <div data-bind="with: record">
+                <form id="editform" data-toggle="validator" role="form">
+                    <div class="form-group">
+                        <label class="control-label " for="nev">Név</label>
+                        <input type="text" class="form-control" id="nev" data-bind="value: buildingName" placeholder="Név"
+                               data-required-error="Név nem lehet üres" required>
+                        <div class="help-block with-errors error-color"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="loca">Elhelyezkedés</label>
+                        <input type="text" class="form-control" id="loca" data-bind="value: locationid" placeholder="Elhelyezkedés"
+                               data-required-error="Hely nem lehet üres"  required>
+                        <div class="help-block with-errors error-color"></div>
+                    </div>
+                     <div class="form-group">
+                        <label class="control-label" for="ep">Épülettípus</label>
+                        <input type="text" class="form-control" id="ep" data-bind="value: buildingTypeid" placeholder="Épülettípus"
+                               data-required-error="Hely nem lehet üres"  required>
+                        <div class="help-block with-errors error-color"></div>
+                    </div>
+                     <div class="form-group">
+                        <label class="control-label" for="meret">Alapterület(m2)</label>
+                        <input type="text" class="form-control" id="meret" data-bind="value: buildingSize" placeholder="Mérete"
+                               data-required-error="Hely nem lehet üres"  required>
+                        <div class="help-block with-errors error-color"></div>
+                    </div>
+                    <button type="button" data-bind="click:$parent.formclicked" id="submiteditform" class="btn btn-primary">Ment</button>
+                    <span data-bind="text:$parent.eredmeny"/>
+                </form>
+            </div>
+        </div>
+    </div>    
+    <div class="modal"></div>
+</body>
+<script type='text/javascript' src='scripts/knockout-3.4.2.js'></script>
+<script type='text/javascript' src='scripts/jquery-3.2.1.min.js'></script>
+<script type="text/javascript" src="scripts/BS/bootstrap.min.js"></script>
+<script type="text/javascript" src="scripts/BS/validator.js"></script>
+<script type="text/javascript" src="scripts/helper.js"></script>
+<script type="text/javascript" src="scripts/login.js"></script>
+<script type="text/javascript" src="scripts/main.js"></script>
+<script type="text/javascript" src="scripts/EditPage.js"></script>
+<script type="text/javascript" src="scripts/BASettings.js"></script>
+<script type="text/javascript" src="scripts/ViewModelOrganizer.js"></script>
+</html>
